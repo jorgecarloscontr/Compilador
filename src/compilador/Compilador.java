@@ -6,6 +6,7 @@
 package compilador;
 
 import Funciones.Lexico;
+import java.util.Scanner;
 
 /**
  *
@@ -17,8 +18,13 @@ public class Compilador {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Lexico lexico = new Lexico("l <= aux");
-        lexico.automata();
+        Scanner entrada = new Scanner(System.in);
+        System.out.print("Ingresa una cadena: ");
+        String cadena= entrada.nextLine();
+        Lexico lexico = new Lexico(cadena);
+        while(lexico.fin()){
+            lexico.automata();
+        }
     }
     
 }
