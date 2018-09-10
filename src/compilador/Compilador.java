@@ -6,6 +6,7 @@
 package compilador;
 
 import Funciones.Lexico;
+import Funciones.Sintactico;
 import java.util.Scanner;
 
 /**
@@ -21,10 +22,13 @@ public class Compilador {
         Scanner entrada = new Scanner(System.in);
         System.out.print("Ingresa una cadena: ");
         String cadena= entrada.nextLine();
+        /*
         Lexico lexico = new Lexico(cadena);
         while(lexico.fin()){
             lexico.automata();
-        }
+        }*/
+        Sintactico analisis=new Sintactico(cadena);
+        analisis.ejercicio1();
     }
     
 }

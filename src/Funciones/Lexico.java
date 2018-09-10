@@ -63,6 +63,7 @@ public final class Lexico {
     }   
     
     public int automata(){
+        estado=0;
         aux=0;
         while(bandera){
             switch(estado){  
@@ -488,14 +489,16 @@ public final class Lexico {
             }
         }
         bandera=true;
-        return tipoc1(estado);
+        return estado=tipoc1(estado);
     }
     public void inicializar(){
-        estado=0;
         aux=0;
         ps=0;
     }
     
+    public int getestado(){
+        return estado;
+    }
     public boolean fin(){
         return entrada.length()>0;
     }
@@ -612,6 +615,7 @@ public final class Lexico {
                     aux="Error";}
                 break;
         }
+        this.estado=estado;
     return aux;
     }   
     
@@ -623,10 +627,10 @@ public final class Lexico {
                 aux=0;
                 break;
             case entero:
-                aux=1;
+                aux=5;
                 break;
             case real:
-                aux=2;
+                aux=23;
                 break;
             case cadena:
                 aux=3;
@@ -649,7 +653,7 @@ public final class Lexico {
                 }
                 break;
             case opsuma:
-                aux=5;
+                aux=1;
                 break;
             case opmul:
                 aux=6;
@@ -703,7 +707,7 @@ public final class Lexico {
                 aux=22;
                 break;
             case opsimbolo:
-                aux=23;
+                aux=2;
                 break;
             case error:
                 aux=24;
