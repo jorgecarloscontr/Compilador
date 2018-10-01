@@ -26,9 +26,12 @@ public class Compilador {
         Lexico lexico = new Lexico(cadena);
         while(lexico.fin()){
             lexico.automata();
-        }*/
+        }
+        */
+        
         Sintactico analisis=new Sintactico(cadena);
-        analisis.ejercicio1();
+        analisis.cargar_datos();
+        analisis._sintactico();
     }
     
 }

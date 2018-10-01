@@ -11,30 +11,30 @@ package Funciones;
  * @author jorge
  */
 public final class Lexico {
-    private static final int identificador = 4;
+    private static final int identificador = 0;
     private static final int entero = 1;
-    private static final int real = 3;
-    private static final int cadena=51;
-    private static final int tipo = 26;
+    private static final int real = 2;
+    private static final int cadena=3;
+    private static final int tipo = 4;
     private static final int opsuma =5;
     private static final int opmul = 6;
-    private static final int oprelac =10;
-    private static final int opor = 15;
-    private static final int opand = 13;
-    private static final int opnot = 9;
-    private static final int opigualdad = 8;
-    private static final int punto_coma = 20;
-    private static final int coma = 22;
-    private static final int in_parentesis = 16;
-    private static final int fn_parentesis = 17;
-    private static final int in_llaves = 18;
-    private static final int fn_llaves = 19;
-    private static final int igualdad =7;
-    private static final int opif = 49;
-    private static final int opwhile = 46;
-    private static final int opreturn = 47;
-    private static final int opelse =48;
-    private static final int opsimbolo = 21;
+    private static final int oprelac =7;
+    private static final int opor = 8;
+    private static final int opand = 9;
+    private static final int opnot = 10;
+    private static final int opigualdad = 11;
+    private static final int punto_coma = 12;
+    private static final int coma = 13;
+    private static final int in_parentesis = 14;
+    private static final int fn_parentesis = 15;
+    private static final int in_llaves = 16;
+    private static final int fn_llaves = 17;
+    private static final int igualdad =18;
+    private static final int opif = 19;
+    private static final int opwhile = 20;
+    private static final int opreturn = 21;
+    private static final int opelse =22;
+    private static final int opsimbolo = 23;
     private static final int error = -1;
     private String entrada;
     private int estado;
@@ -44,6 +44,7 @@ public final class Lexico {
     private String tmp;
     private int aux;
     private char caracter;
+    private String simbolo;   
 
     
     public Lexico(String cadena){
@@ -82,7 +83,7 @@ public final class Lexico {
                         estado=38;
                     }else if(caracter==101){//e
                         estado=43;
-                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123)){//letra
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || caracter==95){//letra
                         estado=4;
                     }else if(caracter==43 || caracter==45){//suma
                         aux=5;
@@ -134,7 +135,7 @@ public final class Lexico {
                         aux=22;
                         ps=1;
                         estado=-1;
-                    }else if(caracter==34){//,
+                    }else if(caracter==34){//"
                         estado=50;
                     }else {
                         aux=0;
@@ -169,7 +170,7 @@ public final class Lexico {
                         estado=-1;}
                     break;
                 case 4: //****************************************validacion identificador
-                    if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                    if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58) || caracter==95){
                         estado=4;
                     }else{
                         aux=estado;
@@ -452,9 +453,11 @@ public final class Lexico {
             if(estado==-1){//si el estado es de error
                 if(aux!=0){//recorta la cadena a uno anterior del actual
                     System.out.println(recortar(entrada,0)+"\t\t"+tipoc(aux));
+                    simbolo=recortar(entrada,0);
                     entrada=recortar(entrada,2);
                 }else{//recorta la cadena en donde se quedo
                     System.out.println(recortar(entrada,1)+"\t\t"+tipoc(estado));
+                    simbolo=recortar(entrada,1);
                     entrada=recortar(entrada,3);
                 }
                 cont=0;
@@ -479,6 +482,7 @@ public final class Lexico {
                 }else{//cuando se termina cadena
                     if(estado!=0){
                         System.out.println(recortar(entrada,1)+"\t\t"+tipoc(estado));
+                        simbolo=recortar(entrada,1);
                     }
                     entrada="$";
                     cont=0;
@@ -491,6 +495,11 @@ public final class Lexico {
         bandera=true;
         return estado=tipoc1(estado);
     }
+
+    public String getSimbolo() {
+        return simbolo;
+    }
+    
     public void inicializar(){
         aux=0;
         ps=0;
@@ -516,19 +525,19 @@ public final class Lexico {
     public String tipoc(int estado){
         String aux="";
         switch(estado){
-            case identificador:
-                aux="Identificador";
+            case 4:
+                aux="identificador";
                 break;
-            case entero:
+            case 1://entero
                 aux="entero";
                 break;
-            case real:
+            case 3:
                 aux="real";
                 break;
-            case cadena:
+            case 51:
                 aux="cadena";
                 break;
-            case tipo:
+            case 26:
                 aux="tipo";
                 break;
             case 25:
@@ -536,83 +545,80 @@ public final class Lexico {
                 break;
             case 37:
                 if(this.aux==36){
-                    aux="while";
+                    aux="opwhile";//while
                 }else if(this.aux==42){
-                    aux="return";//-------------return
+                    aux="opreturn";//-------------return
                 }else if(this.aux==45) {
-                    aux="else";//-------------else
+                    aux="opelse";//-------------else
                 }else{
-                    aux="if";//-------------if
+                    aux="opif";//-------------if
                 }
                 break;
-            case opsuma:
-                aux="operacion suma";
+            case 5:
+                aux="opsuma";
                 break;
-            case opmul:
-                aux="operacion multiplicacion";
+            case 6:
+                aux="opmul";
                 break;
-            case oprelac:
-                aux="relacional";
+            case 10:
+                aux="oprelac";
                 break;
-            case opor:
-                aux="operacion or";
+            case 15:
+                aux="opor";
                 break;
-            case opand:
-                aux="operacion and";
+            case 13:
+                aux="opand";
                 break;
-            case opnot:
-                aux="operacion not";
+            case 9:
+                aux="opnot";
                 break;
-            case opigualdad:
-                aux="operacion igualdad";
+            case 8:
+                aux="opigualdad";
                 break;
-            case punto_coma:
-                aux="punto y coma";
+            case 20:
+                aux="punto_coma";
                 break;
-            case coma:
+            case 22:
                 aux="coma";
                 break;
-            case in_parentesis:
-                aux="inicio parentesis";
+            case 16:
+                aux="in_parentesis";
                 break;
-            case fn_parentesis:
-                aux="cierre parentesis";
+            case 17:
+                aux="fn_parentesis";
                 break;
-            case in_llaves:
-                aux="inicio llaves";
+            case 18:
+                aux="in_llaves";
                 break;
-            case fn_llaves:
-                aux="cierre llaves";
+            case 19:
+                aux="fn_llaves";
                 break;
-            case igualdad:
+            case 7:
                 aux="igualdad";
                 break;
-            case opif:
-                aux="operacion if";
+            case 49:
+                aux="opif";
                 break;
-            case opwhile:
-                aux="operacion while";
+            case 46:
+                aux="opwhile";
                 break;
-            case opreturn:
-                aux="operacion return";
+            case 47:
+                aux="opreturn";
                 break;
-            case opelse:
-                aux="operacion else";
+            case 48:
+                aux="opelse";
                 break;
-            case opsimbolo:
-                aux="operacion simbolo";
-                break;
-            case error:
-                aux="error";
+            case 21:
+                aux="opsimbolo";
                 break;
             case 11:
-                aux="realacional";
+                aux="oprelac";
                 break;
             default:
                 if((estado>26 && estado<37) || estado==23 || estado==24 || estado==23 || (estado>37 && estado<46) ) {
-                    aux="Identificador";
+                    aux="identificador";
                 } else {
-                    aux="Error";}
+                    aux="error";}
                 break;
         }
         this.estado=estado;
@@ -623,103 +629,100 @@ public final class Lexico {
     public int tipoc1(int estado){
         int aux;
         switch(estado){
-            case identificador:
-                aux=0;
+            case 4:
+                aux=identificador;
                 break;
-            case entero:
-                aux=5;
+            case 1://entero
+                aux=entero;
                 break;
-            case real:
-                aux=23;
+            case 3:
+                aux=real;
                 break;
-            case cadena:
-                aux=3;
+            case 51:
+                aux=cadena;
                 break;
-            case tipo:
-                aux=4;
+            case 26:
+                aux=tipo;
                 break;
             case 25:
-                aux=4;
+                aux=tipo;
                 break;
             case 37:
                 if(this.aux==36){
-                    aux=20;
+                    aux=opwhile;//while
                 }else if(this.aux==42){
-                    aux=21;//-------------return
+                    aux=opreturn;//-------------return
                 }else if(this.aux==45) {
-                    aux=22;//-------------else
+                    aux=opelse;//-------------else
                 }else{
-                    aux=19;//-------------if
+                    aux=opif;//-------------if
                 }
                 break;
-            case opsuma:
-                aux=1;
+            case 5:
+                aux=opsuma;
                 break;
-            case opmul:
-                aux=6;
+            case 6:
+                aux=opmul;
                 break;
-            case oprelac:
-                aux=7;
+            case 10:
+                aux=oprelac;
                 break;
-            case opor:
-                aux=8;
+            case 15:
+                aux=opor;
                 break;
-            case opand:
-                aux=9;
+            case 13:
+                aux=opand;
                 break;
-            case opnot:
-                aux=10;
+            case 9:
+                aux=opnot;
                 break;
-            case opigualdad:
-                aux=11;
+            case 8:
+                aux=opigualdad;
                 break;
-            case punto_coma:
-                aux=12;
+            case 20:
+                aux=punto_coma;
                 break;
-            case coma:
-                aux=13;
+            case 22:
+                aux=coma;
                 break;
-            case in_parentesis:
-                aux=14;
+            case 16:
+                aux=in_parentesis;
                 break;
-            case fn_parentesis:
-                aux=15;
+            case 17:
+                aux=fn_parentesis;
                 break;
-            case in_llaves:
-                aux=16;
+            case 18:
+                aux=in_llaves;
                 break;
-            case fn_llaves:
-                aux=17;
+            case 19:
+                aux=fn_llaves;
                 break;
-            case igualdad:
-                aux=18;
+            case 7:
+                aux=igualdad;
                 break;
-            case opif:
-                aux=19;
+            case 49:
+                aux=opif;
                 break;
-            case opwhile:
-                aux=20;
+            case 46:
+                aux=opwhile;
                 break;
-            case opreturn:
-                aux=21;
+            case 47:
+                aux=opreturn;
                 break;
-            case opelse:
-                aux=22;
+            case 48:
+                aux=opelse;
                 break;
-            case opsimbolo:
-                aux=2;
-                break;
-            case error:
-                aux=24;
+            case 21:
+                aux=opsimbolo;
                 break;
             case 11:
-                aux=6;
+                aux=oprelac;
                 break;
             default:
                 if((estado>26 && estado<37) || estado==23 || estado==24 || estado==23 || (estado>37 && estado<46) ) {
-                    aux=0;
+                    aux=identificador;
                 } else {
-                    aux=24;}
+                    aux=error;}
                 break;
         }
     return aux;
