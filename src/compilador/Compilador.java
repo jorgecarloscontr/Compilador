@@ -5,7 +5,6 @@
  */
 package compilador;
 
-import Funciones.Lexico;
 import Funciones.Sintactico;
 import java.util.Scanner;
 
