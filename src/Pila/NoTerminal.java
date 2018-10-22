@@ -14,10 +14,10 @@ import Funciones.Nodo;
 public class NoTerminal extends ElementoPila{
     private String regla;
     private Nodo nodo;
-    public NoTerminal(int id, String regla){
+    public NoTerminal(int id, String regla,Nodo nodo){
         this.id=id;
         this.regla=regla;
-        this.nodo=null;
+        this.nodo=nodo;
         
     }
     @Override

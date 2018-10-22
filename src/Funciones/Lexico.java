@@ -140,10 +140,10 @@ public final class Lexico {
                     }else {
                         aux=0;
                         ps=0;
-                        if(caracter==32)
+                        if(caracter==32 || caracter==13 ||caracter==10 || caracter==9){
                             estado=0;
-                        else 
-                            estado=-1;}
+                        }else{ 
+                            estado=-1;}}
                     break;
                 case 1://*********************************************entero
                     if(caracter>47 && caracter<58){//numero
@@ -473,22 +473,24 @@ public final class Lexico {
                 inicializar();
                 bandera=false;
             }else{
-                if(estado==0){
+                if(estado==0 ){
                     entrada=recortar(entrada,3);
                     cont=0;
                 }
                 if(cont<entrada.length()){//sigue con la lectura
                     caracter=sig_caracter(entrada);
                 }else{//cuando se termina cadena
+                    System.out.println("niinininininini");
                     if(estado!=0){
                         System.out.println(recortar(entrada,1)+"\t\t"+tipoc(estado));
                         simbolo=recortar(entrada,1);
+                        bandera=false;
+
                     }
                     entrada="$";
                     cont=0;
                     caracter=sig_caracter(entrada);
                     inicializar();
-                    bandera=false;
                 }
             }
         }
