@@ -48,11 +48,14 @@ public class Sintactico {
     private static final int Ancho=130;
     private static final int Alto=70;
     private static int max=0;
-    private static Nodo raiz;
+    private Nodo raiz;
     private JScrollPane jScrollPane2;
     private JPanel panel;
 
-   
+    public Nodo getRaiz() {
+        return raiz;
+    }
+    
     public Sintactico(String cadena) {
         pila = new Stack<>();
         aceptacion = false;
@@ -69,9 +72,9 @@ public class Sintactico {
             @Override
             public void paintComponent(Graphics g){
                 super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D)g;
+                g2.setFont(new Font("Arial",Font.TRUETYPE_FONT,18));
                 if(raiz!=null){
-                    Graphics2D g2 = (Graphics2D)g;
-                    g2.setFont(new Font("Arial",Font.TRUETYPE_FONT,18));
                     elementos(g,raiz,0);
                 }
             }
@@ -330,9 +333,10 @@ public class Sintactico {
             lista.add(aux);
         }
     }
-    void reajustar(int capa){
+    void reajustar(int capa,boolean bandera){
         List<Nodo> lista=new ArrayList<>();
         capan(0, capa,raiz, lista);
+        Nodo padre;
         int i=0,e;
         double tmp,tmp1,media;
         while(i<lista.size()){
@@ -341,6 +345,14 @@ public class Sintactico {
                     tmp=lista.get(i).getX();
                     lista.get(i).setX((lista.get(i).getultimo().getX()-lista.get(i).getprimero().getX())/2+lista.get(i).getprimero().getX());
                     if(lista.get(i).getX()!=tmp){
+                        padre=lista.get(i).getPadre();
+                        if(i-1>-1){
+                            if(lista.get(i-1).getPadre().equals(padre) && lista.get(i-1).getHijos().isEmpty()){
+                                media=tmp-lista.get(i-1).getX();
+                                lista.get(i-1).setX(lista.get(i).getX()-media);
+                                lista.get(i-1).setDistancia(lista.get(i).getX()-media);
+                            }
+                        }
                         e=i+1;
                         tmp=lista.get(i).getDistancia();
                         while(e<lista.size()){
@@ -359,34 +371,59 @@ public class Sintactico {
         }
     }
         
-    void generar_arbol(Nodo raiz){
+   void generar_arbol(Nodo raiz){
         raiz.setDistancia(0);
         raiz.setX(Ancho);
         raiz.setY(0);
         raiz.setVisit(true);
         Nodo p_actual;
+        Graphics g=panel.getGraphics();
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setFont(new Font("Arial",Font.TRUETYPE_FONT,18));
+        Rectangle2D rectangulo;
         int i=1,iter;
-        double x;
+        double x,tmpx,tamletra=0;
         while(i<max){//while que itera para todas las capas
             List<Nodo> lista=new ArrayList<>();
             capan(0, i+1,raiz, lista);
             p_actual=lista.get(0).getPadre();//Padre actual
-            x=p_actual.getX();//posicion x del padre actual
+            x=p_actual.getX()-Ancho;//posicion x del padre actual
+            tmpx=0;
             for(Nodo t:lista){
                 t.setVisit(true);
                 if(!t.getPadre().equals(p_actual)){
                     p_actual=t.getPadre();
-                    x=p_actual.getX();
+                    if(x+tamletra>p_actual.getX()-Ancho/2){
+                        tmpx=(x+tamletra)-(p_actual.getX()-Ancho);
+                    }
+                    x=p_actual.getX()-Ancho;
                 }
-                t.setX(x);
-                t.setDistancia(x);
+                rectangulo= g.getFontMetrics(g.getFont()).getStringBounds(t.getSimbolo(), g);
+                tamletra=rectangulo.getWidth()/2;
                 t.setY(t.getPadre().getY()+Alto);
-                x+=Ancho;
+                if(tamletra<=Ancho/2){
+                    t.setX(x+Ancho+tmpx);
+                    t.setDistancia(t.getX());
+                    tmpx=0;
+                }else{
+
+                    if(tmpx==0){
+                        t.setX(Ancho+x+tamletra);
+                        System.out.println("cuando x="+x+" tamletras "+tamletra+" xn "+t.getX());
+                    }else
+                        t.setX(tmpx+x+tamletra+(Ancho/2));
+                    tmpx=tamletra;
+                    t.setDistancia(t.getX());
+                }
+                x=t.getX();
                 if(p_actual.getultimo().equals(t)){//ver si es el ultimo hijo
                     iter=i;
                     //algoritmo que reajusta las capas anteriores
                     while(iter>0){
-                        reajustar(iter);
+                        if(iter!=i)
+                            reajustar(iter,false);
+                        else
+                            reajustar(iter,true);
                         iter--;
                     }
                 }

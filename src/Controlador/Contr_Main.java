@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Funciones.Semantico;
 import Funciones.Sintactico;
 import Vista.Main;
 import java.awt.Color;
@@ -29,7 +30,8 @@ public class Contr_Main {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane numeracion;
     private javax.swing.JButton jButtonEjecutar;
-    private Sintactico analisis;
+    private javax.swing.JButton jButtonOutput;
+    private Semantico semantico;
 
 
     private int nfila;
@@ -45,15 +47,15 @@ public class Contr_Main {
         nfila=1;
         numeracion.setEditable(false);
         numeracion.setBackground(new Color(244,244,244));
-//        numeracion.setForeground(Color.white);
+        numeracion.setForeground(new Color(0,128,192));
         Font font=new Font("Arial",Font.PLAIN,18);
         numeracion.setFont(font);
         jTextPane1.setFont(font);
-        numeracion.setEnabled(false);
+//        numeracion.setEnabled(false);
         numeracion.setText("1");
         jButtonEjecutar=ventana.getjButtonEjecutar();
-        analisis=new Sintactico(jScrollPane2);
-        analisis.cargar_datos();
+        semantico=new Semantico(jScrollPane2);
+        jButtonOutput=ventana.getjButtonOutput();
 
         Document doc = jTextPane1.getDocument();
         doc.addDocumentListener(new DocumentListener(){
@@ -107,8 +109,13 @@ public class Contr_Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cadena=jTextPane1.getText();
-                analisis.inicializar(cadena);
-                analisis._sintactico();
+                semantico.run(cadena);
+            }
+        });
+        jButtonOutput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
             }
         });
         
