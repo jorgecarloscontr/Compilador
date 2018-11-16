@@ -152,10 +152,10 @@ class DefVar extends Nodo{
         tmp.setPadre(this);
         this.addhijos(tmp);
         pila.pop();
-        Identificador ident = new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+        Identificador ident = new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
         this.addhijos(ident);
         pila.pop();
-        Tipo tipo=new Tipo(((Terminal)pila.pop()).getsimbolo(),this);
+        Tipo tipo=new Tipo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
         this.addhijos(tipo);
         this.simbolo="DefVar";
     }
@@ -173,16 +173,18 @@ class ListaVar extends Nodo{
             tmp.setPadre(this);
             this.addhijos(tmp);
             pila.pop();
-            Identificador ident = new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+            Identificador ident = new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
             this.addhijos(ident);
             pila.pop();
-            Simbolo s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+            Simbolo s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
             this.addhijos(s);
         }
     }
 }
 class Simbolo extends Nodo{
-    public Simbolo(String simbolo,Nodo padre){
+    int numLinea;
+    public Simbolo(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.setPadre(padre);
     } 
@@ -205,10 +207,10 @@ class DefFunc extends Nodo{
         pila.pop();
         pila.pop();
         pila.pop();
-        Nodo identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+        Nodo identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
         this.addhijos(identificador);
         pila.pop();
-        Nodo tipo=new Tipo(((Terminal)pila.pop()).getsimbolo(),this);
+        Nodo tipo=new Tipo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
         this.addhijos(tipo);
     }
     @Override
@@ -232,10 +234,10 @@ class Parametros extends Nodo{
             listaparam.setPadre(this);
             this.addhijos(listaparam);
             pila.pop();
-            Nodo identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+            Nodo identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
             this.addhijos(identificador);
             pila.pop();
-            Nodo tipo=new Tipo(((Terminal)pila.pop()).getsimbolo(),this);
+            Nodo tipo=new Tipo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
             this.addhijos(tipo);
         }
     }
@@ -253,13 +255,13 @@ class ListaParam extends Nodo{
             listaparam.setPadre(this);
             this.addhijos(listaparam);
             pila.pop();
-            Nodo identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+            Nodo identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
             this.addhijos(identificador);
             pila.pop();
-            Tipo tipo=new Tipo(((Terminal)pila.pop()).getsimbolo(),this);
+            Tipo tipo=new Tipo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
             this.addhijos(tipo);
             pila.pop();
-            Simbolo s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+            Simbolo s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
             this.addhijos(s);
         }
     }
@@ -332,7 +334,7 @@ class Sentencia extends Nodo{
         switch(tam){
             case 2:
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 pila.pop();
                 llamadafunc=((NoTerminal)pila.pop()).getNodo();
@@ -341,29 +343,29 @@ class Sentencia extends Nodo{
                 break;
             case 3:
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 pila.pop();
                 valorregresa=(ValorRegresa)((NoTerminal)pila.pop()).getNodo();
                 valorregresa.setPadre(this);
                 this.addhijos(valorregresa);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 break;
             case 4:
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 pila.pop();
                 expresion=(Expresion)((NoTerminal)pila.pop()).getNodo();
                 expresion.setPadre(this);
                 this.addhijos(expresion);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 pila.pop();
-                identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+                identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 identificador.setPadre(this);
                 this.addhijos(identificador);
                 break;
@@ -381,7 +383,7 @@ class Sentencia extends Nodo{
                 pila.pop();
                 pila.pop();
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 break;
             case 6:
@@ -402,7 +404,7 @@ class Sentencia extends Nodo{
                 pila.pop();
                 pila.pop();
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
                 this.addhijos(s);
                 break;           
         }
@@ -434,28 +436,63 @@ class Sentencia extends Nodo{
                 if(Semantico.tablaSimbolos.varLocalDefinida(this.getultimo().getSimbolo(),p.getHijos().get(p.getHijos().size()-2).getSimbolo())){
                     tipo=tbl.tipoVariableLocal(this.getultimo().getSimbolo(),p.getHijos().get(p.getHijos().size()-2).getSimbolo());
                     if(tipo!=((Expresion)this.getHijos().get(1)).getTipo())
-                        Semantico.listaErrores.add("Error de asignacion: La variable '"+this.getultimo().getSimbolo()+"' no es del mismo tipo");
+                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo()).numLinea+": Asignacion en la variable '"+this.getultimo().getSimbolo()+"' incorrecta");
                 }else{
                     if(Semantico.tablaSimbolos.varGlobalDefinida(this.getultimo().getSimbolo())){
                         tipo=tbl.tipoVariableGlobal(this.getultimo().getSimbolo());
                         if(tipo!=((Expresion)this.getHijos().get(1)).getTipo())
-                            Semantico.listaErrores.add("Error de asignacion: La variable '"+this.getultimo().getSimbolo()+"' no es del mismo tipo");
+                            Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo()).numLinea+": Asignacion en la variable '"+this.getultimo().getSimbolo()+"' incorrecta");
                     }else
-                        Semantico.listaErrores.add("Error variable "+this.getultimo().getSimbolo()+" no declarada");
+                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo()).numLinea+": Variable '"+this.getultimo().getSimbolo()+"' no definida");
                 }
                 break;
             case 6:
                 if(((Expresion)this.getHijos().get(2)).getTipo()!='b'){
-                    Semantico.listaErrores.add("Error en los parametros del if ");
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getultimo()).numLinea+": Los parametros del if no son booleanos");
                 }
                 break;
             case 5:
                 if(((Expresion)this.getHijos().get(1)).getTipo()!='b'){
-                    Semantico.listaErrores.add("Los parametros del if no son booleanos ");
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getultimo()).numLinea+": Los parametros del while no son booleanos");
                 }
                 break;
-            //case return falta declarar
-            //case 2: llamada a funcion falta declarar
+            case 3://return
+                p=padre;
+                while(!p.getSimbolo().equals("DefFunc")){
+                    p=p.getPadre();
+                }
+                if(Semantico.tablaSimbolos.varLocalDefinida(this.getHijos().get(1).getultimo().getultimo().getultimo().simbolo,p.getHijos().get(2).getSimbolo())
+                   ||Semantico.tablaSimbolos.varGlobalDefinida(this.getHijos().get(1).getultimo().getultimo().getultimo().simbolo)){
+                    if(Semantico.tablaSimbolos.TipoFuncionDefinida(p.getHijos().get(2).getSimbolo())!=Semantico.tablaSimbolos.tipoVariableGlobal(this.getHijos().get(1).getultimo().getultimo().getultimo().simbolo) &&
+                            Semantico.tablaSimbolos.TipoFuncionDefinida(p.getHijos().get(2).getSimbolo())!=Semantico.tablaSimbolos.tipoVariableLocal(this.getHijos().get(1).getultimo().getultimo().getultimo().simbolo,p.getHijos().get(2).getSimbolo())){
+                        Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getultimo()).numLinea+":  El valor de retorno no es el mismo que de la funcion");
+                    }
+                }
+                break;
+            case 2: //llamada a funcion falta declarar
+                if(Semantico.tablaSimbolos.funcionDefinida(this.getultimo().getultimo().simbolo)){
+                    Nodo aux=this.getprimero().getprimero();
+                    int cont=0;
+                    char c;
+                    List<String> lista= Semantico.tablaSimbolos.parametrosFuncionDefinida(this.getprimero().getultimo().simbolo);
+                    while(!aux.getHijos().isEmpty()){
+                        if(cont<lista.size()){
+                            aux.getHijos().get(1).validaTipos(Semantico.tablaSimbolos);
+                            c=Semantico.tablaSimbolos.tipoVariableLocal(lista.get(cont),this.getprimero().getultimo().simbolo);
+                            if(((Expresion)aux.getHijos().get(1)).getTipo()!=c){
+                                Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "' incorrecta, el parametro "+(cont+1)+" deve ser de tipo "+ c);
+                            }
+                        }
+                        aux=aux.getprimero();
+                        cont++;
+                    }
+                    if(cont!=lista.size()){
+                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "'  contiene una cantidad de parametros incorrectos");
+                    }
+                }else{
+                    Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo().getultimo()).numLinea+": Funcion "+this.getultimo().getultimo().simbolo+" no delarada");
+                }
+                break;
                 
                 
         }
@@ -471,7 +508,7 @@ class Otro extends Nodo{
             sentenciabloque.setPadre(this);
             this.addhijos(sentenciabloque);
             pila.pop();
-            Nodo s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+            Nodo s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
             this.addhijos(s);
         }
     }
@@ -529,26 +566,32 @@ class ListaArgumentos extends Nodo{
             expresion.setPadre(this);
             this.addhijos(expresion);
             pila.pop();
-            Nodo s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);  
+            Nodo s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);  
             this.addhijos(s);
         }
     }
 }
 
 class Entero extends Nodo{
-    public Entero(String simbolo,Nodo padre){
+    int numLinea;
+    public Entero(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.padre=padre;
     }
 }
 class Real extends Nodo{
-    public Real(String simbolo,Nodo padre){
+    int numLinea;
+    public Real(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.padre=padre;
     }
 }
 class Cadena extends Nodo{
-    public Cadena(String simbolo,Nodo padre){
+    int numLinea;
+    public Cadena(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.padre=padre;
     }
@@ -568,22 +611,22 @@ class Termino extends Nodo{
                 break;
             case 36:
                 pila.pop();
-                Nodo identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+                Nodo identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(identificador);
                 break;
             case 37:
                 pila.pop();
-                Nodo entero=new Entero(((Terminal)pila.pop()).getsimbolo(),this);
+                Nodo entero=new Entero(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(entero);
                 break;
             case 38: 
                 pila.pop();
-                Nodo real=new Real(((Terminal)pila.pop()).getsimbolo(),this);
+                Nodo real=new Real(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(real);
                 break;
             case 39:
                 pila.pop();
-                Nodo cadena=new Cadena(((Terminal)pila.pop()).getsimbolo(),this);
+                Nodo cadena=new Cadena(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(cadena);
                 break;
         }
@@ -602,20 +645,20 @@ class Termino extends Nodo{
                 while(!aux.getHijos().isEmpty()){
                     if(cont<lista.size()){
                         aux.getHijos().get(1).validaTipos(Semantico.tablaSimbolos);
-                        c=Semantico.tablaSimbolos.tipoVariableLocal(lista.get(cont),p.getHijos().get(p.getHijos().size()-2).getSimbolo());
+                        c=Semantico.tablaSimbolos.tipoVariableLocal(lista.get(cont),this.getprimero().getultimo().simbolo);
                         if(((Expresion)aux.getHijos().get(1)).getTipo()!=c){
-                            Semantico.listaErrores.add("Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "' incorrecta, el parametro "+(cont+1)+" deve ser de tipo "+ c);
+                            Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "' incorrecta, el parametro "+(cont+1)+" deve ser de tipo "+ c);
                         }
                     }
                     aux=aux.getprimero();
                     cont++;
                 }
                 if(cont!=lista.size()){
-                    Semantico.listaErrores.add("Llamada a funcion '"+this.getprimero().getultimo().simbolo+ "' contiene una cantidad de parametros incorrectos");
+                    Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "'  contiene una cantidad de parametros incorrectos");
                 }
                 return Semantico.tablaSimbolos.TipoFuncionDefinida(this.getprimero().getultimo().simbolo);
             }else{
-                Semantico.listaErrores.add("Funcion "+this.getprimero().getultimo().simbolo+" no delarada");
+                Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Funcion "+this.getprimero().getultimo().simbolo+" no delarada");
                 return 'n';
             }
         }
@@ -627,7 +670,10 @@ class Termino extends Nodo{
             if(Semantico.tablaSimbolos.varLocalDefinida(this.getprimero().getSimbolo(),p.getHijos().get(p.getHijos().size()-2).getSimbolo())){
                 return Semantico.tablaSimbolos.tipoVariableLocal(this.getprimero().getSimbolo(),p.getHijos().get(p.getHijos().size()-2).getSimbolo());
             }else{
-                Semantico.listaErrores.add("Variable "+this.getprimero().getSimbolo()+" no declarada");
+                if(Semantico.tablaSimbolos.varGlobalDefinida(this.getprimero().getSimbolo())){
+                    return Semantico.tablaSimbolos.tipoVariableGlobal(this.getprimero().getSimbolo()); 
+                }else
+                    Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero()).numLinea+": Variable '"+this.getprimero().simbolo+ "' no definida");
             }
             return 'n';
         }
@@ -638,6 +684,7 @@ class Termino extends Nodo{
 }
 class LlamadaFunc extends Nodo{
     public LlamadaFunc(Stack<ElementoPila> pila){
+        this.simbolo="LlamadaFunc";
         pila.pop();
         pila.pop();
         pila.pop();
@@ -647,7 +694,7 @@ class LlamadaFunc extends Nodo{
         pila.pop();
         pila.pop();
         pila.pop();
-        Nodo identificador=new Identificador(((Terminal)pila.pop()).getsimbolo(),this);
+        Nodo identificador=new Identificador(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
         this.addhijos(identificador);
     }
 }
@@ -664,7 +711,7 @@ class SentenciaBloque extends Nodo{
 class Expresion extends Nodo{
     Nodo izq, der;
     Nodo s;
-    int nregla;
+    int nregla,numLineas;
     char tipo;
     public Expresion(int nregla,Stack<ElementoPila> pila){
         this.simbolo="Expresion";
@@ -686,7 +733,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 break;
             case 45:
@@ -695,7 +742,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 break;
             case 46: 
@@ -704,7 +751,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 pila.pop();
                 izq=((NoTerminal)pila.pop()).getNodo();
@@ -717,7 +764,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 pila.pop();
                 izq=((NoTerminal)pila.pop()).getNodo();
@@ -730,7 +777,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 pila.pop();
                 izq=((NoTerminal)pila.pop()).getNodo();
@@ -743,7 +790,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 pila.pop();
                 izq=((NoTerminal)pila.pop()).getNodo();
@@ -756,7 +803,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 pila.pop();
                 izq=((NoTerminal)pila.pop()).getNodo();
@@ -769,7 +816,7 @@ class Expresion extends Nodo{
                 der.setPadre(this);
                 this.addhijos(der);
                 pila.pop();
-                s=new Simbolo(((Terminal)pila.pop()).getsimbolo(),this);
+                s=new Simbolo(((Terminal)pila.peek()).getLinea(),((Terminal)pila.pop()).getsimbolo(),this);
                 this.addhijos(s);
                 izq=((NoTerminal)pila.pop()).getNodo();
                 izq.setPadre(this);
@@ -807,7 +854,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo=((Expresion)this.getprimero()).getTipo();
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" opmult "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" opmult "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -815,7 +862,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo=((Expresion)this.getprimero()).getTipo();
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" opsum "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" opsum "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -823,7 +870,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo='b';//boolean
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" oprelac "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" oprelac "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -831,7 +878,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo='b';//boolean
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" == "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" == "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -839,7 +886,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo=((Expresion)this.getprimero()).getTipo();
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" and "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" and "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -847,7 +894,7 @@ class Expresion extends Nodo{
                 if(((Expresion)this.getprimero()).getTipo()==((Expresion)this.getultimo()).getTipo()){
                     tipo=((Expresion)this.getprimero()).getTipo();
                 }else{
-                    Semantico.listaErrores.add("Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" or "+((Expresion)this.getultimo()).getTipo());
+                    Semantico.listaErrores.add("Error en la linea "+((Simbolo)this.getHijos().get(1)).numLinea+": Expresion no admitida: "+((Expresion)this.getprimero()).getTipo()+" or "+((Expresion)this.getultimo()).getTipo());
                     tipo='n';
                 }
                 break;
@@ -865,7 +912,9 @@ class Expresion extends Nodo{
 }
 
 class Tipo extends Nodo{
-    public Tipo(String simbolo,Nodo padre){
+    int numLinea;
+    public Tipo(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.padre=padre;
     }
@@ -879,7 +928,9 @@ class Tipo extends Nodo{
 }
 
 class  Identificador extends Nodo{
-    public Identificador(String simbolo,Nodo padre){
+    int numLinea;
+    public Identificador(int numLinea,String simbolo,Nodo padre){
+        this.numLinea=numLinea;
         this.simbolo=simbolo;
         this.setPadre(padre);
     }

@@ -101,7 +101,7 @@ public class Sintactico {
             accion = tablaLR2[fila][columna];
             int aux = 0;
             if (accion > 0) {
-                pila.add(new Terminal(columna, lexico.getSimbolo()));
+                pila.add(new Terminal(columna, lexico.getSimbolo(),lexico.getNumLinea()));
                 pila.add(new Estado(accion));
                 muestra();
                 lexico.automata();
@@ -144,10 +144,13 @@ public class Sintactico {
             accion = tablaLR[fila][columna];
             int aux = 0;
             if (accion > 0) {
-                pila.add(new Terminal(columna, lexico.getSimbolo()));
+                pila.add(new Terminal(columna, lexico.getSimbolo(),lexico.getNumLinea()));
+                System.out.println(lexico.getSimbolo()+" linea: "+lexico.getNumLinea());
                 pila.add(new Estado(accion));
                 muestra();
                 lexico.automata();
+                if(lexico.getestado()==-1)
+                    cancelar=true;
             } else {
                 if (accion < 0) {
                     if (accion == -1) {

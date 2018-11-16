@@ -45,6 +45,7 @@ public final class Lexico {
     private int aux;
     private char caracter;
     private String simbolo;   
+    private int numLinea;
 
     
     public Lexico(String cadena){
@@ -54,10 +55,16 @@ public final class Lexico {
         cont=1;
         tmp="";
         ps=0;
+        numLinea=0;
         aux=0;
         if(!entrada.isEmpty())
             caracter=entrada.charAt(0);
     }
+
+    public int getNumLinea() {
+        return numLinea;
+    }
+    
     public char sig_caracter(String cadena){
             cont++;
             return cadena.charAt(cont-1);          
@@ -141,6 +148,8 @@ public final class Lexico {
                         aux=0;
                         ps=0;
                         if(caracter==32 || caracter==13 ||caracter==10 || caracter==9){
+                            if(caracter==10)
+                                numLinea++;
                             estado=0;
                         }else{ 
                             estado=-1;}}

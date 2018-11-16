@@ -11,14 +11,20 @@ package Pila;
  */
 public class Terminal extends ElementoPila{
     private String simbolo;
-    public Terminal(int id,String simbolo){
+    private int linea;
+    public Terminal(int id,String simbolo,int linea){
         this.id=id;
         this.simbolo=simbolo;
+        this.linea=linea;
     }
     public Terminal(int id){
         this.id=id;
     }
 
+    public int getLinea() {
+        return linea;
+    }
+    
     @Override
     public void muestra() {
         System.out.println("id: "+this.id+" Simbolo: "+this.simbolo);

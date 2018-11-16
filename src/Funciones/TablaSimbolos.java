@@ -61,8 +61,9 @@ public class TablaSimbolos {
         while(it.hasNext() && !bandera){
             e=(ElementoTabla) it.next();
             if(e.isVariable() && e.isVarLocal()){
-                if(((Variable)e).getAmbito().equals(funcion) && e.getSimbolo().equals(variable))
+                if(((Variable)e).getAmbito().equals(funcion) && e.getSimbolo().equals(variable)){
                     return e.getTipo();
+                }
             }
         }
         return 'n';
@@ -126,7 +127,10 @@ public class TablaSimbolos {
                 while(!tmp.getHijos().isEmpty()){
                     simbolo=tmp.getHijos().get(1).getSimbolo();
                     if(varGlobalDefinida(simbolo)){
-                        Semantico.listaErrores.add("Variable "+simbolo+" ya habia sido definida");
+                        if(DefVar.class.isInstance(tmp))
+                            Semantico.listaErrores.add("Error en la linea "+((Tipo)tmp.getultimo()).numLinea+": La variable '"+simbolo+"' ya habia sido definida");
+                        else
+                            Semantico.listaErrores.add("Error en la linea "+((Identificador)tmp.getHijos().get(1)).numLinea+": La variable '"+simbolo+"' ya habia sido definida");
                     }else{
                         ElementoTabla elemento=new Variable(tipo, simbolo, "");
                         agregar(elemento);
@@ -142,7 +146,10 @@ public class TablaSimbolos {
                 while(!tmp.getHijos().isEmpty()){
                     simbolo=tmp.getHijos().get(1).getSimbolo();
                     if(varLocalDefinida(simbolo,p.getHijos().get(p.getHijos().size()-2).getSimbolo()))
-                        Semantico.listaErrores.add("Variable "+simbolo+" ya habia sido definida");
+                        if(DefVar.class.isInstance(tmp))
+                            Semantico.listaErrores.add("Error en la linea "+((Tipo)tmp.getultimo()).numLinea+": La variable '"+simbolo+"' ya habia sido definida");
+                        else
+                            Semantico.listaErrores.add("Error en la linea "+((Identificador)tmp.getHijos().get(1)).numLinea+": La variable '"+simbolo+"' ya habia sido definida");
                     else{
                         ElementoTabla elemento=new Variable(tipo,simbolo,p.getHijos().get(p.getHijos().size()-2).getSimbolo());
                         agregar(elemento);
@@ -161,7 +168,10 @@ public class TablaSimbolos {
             simbolo=tmp.getHijos().get(1).getSimbolo();
             tipo=((Tipo)tmp.getHijos().get(2)).dimeTipo();
             if(varLocalDefinida(simbolo,ambito))
-                Semantico.listaErrores.add("Variable "+simbolo+" ya habia sido definida");
+                if(DefVar.class.isInstance(tmp))
+                    Semantico.listaErrores.add("Error en la linea "+((Tipo)tmp.getultimo()).numLinea+": El parametro '"+simbolo+" ya habia sido definida");
+                else
+                    Semantico.listaErrores.add("Error en la linea "+((Tipo)tmp.getHijos().get(2)).numLinea+": El parametro '"+simbolo+"' ya habia sido definida");
             else{
                 ElementoTabla elemento=new Variable(tipo,simbolo,ambito);
                 agregar(elemento);
@@ -181,7 +191,7 @@ public class TablaSimbolos {
             parametros=parametros.getHijos().get(0);
         }
         if(funcionDefinida(simbolo)){
-            Semantico.listaErrores.add("La funcion "+simbolo+" ya habia sido definida");
+            Semantico.listaErrores.add("Error en la linea "+((Tipo)defFunc.getultimo()).numLinea+": La funcion '"+simbolo+" ya habia sido definida");
         }else{
             ElementoTabla elemento=new Funcion(tipo,simbolo,sparametros);
             agregar(elemento);

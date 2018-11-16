@@ -31,6 +31,9 @@ public class Contr_Main {
     private javax.swing.JTextPane numeracion;
     private javax.swing.JButton jButtonEjecutar;
     private javax.swing.JButton jButtonOutput;
+    private javax.swing.JTable jTableVar;
+    private javax.swing.JTable jTableFunc;
+
     private Semantico semantico;
 
 
@@ -54,8 +57,11 @@ public class Contr_Main {
 //        numeracion.setEnabled(false);
         numeracion.setText("1");
         jButtonEjecutar=ventana.getjButtonEjecutar();
-        semantico=new Semantico(jScrollPane2);
+        jTableVar=ventana.getjTable1();
+        jTableFunc=ventana.getjTable2();
+        semantico=new Semantico(jScrollPane2,jTableVar,jTableFunc);
         jButtonOutput=ventana.getjButtonOutput();
+
 
         Document doc = jTextPane1.getDocument();
         doc.addDocumentListener(new DocumentListener(){
