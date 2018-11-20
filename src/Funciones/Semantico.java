@@ -63,4 +63,11 @@ public class Semantico {
         funcTableModel.updateTable(tablaSimbolos.getListaTabla());
         funcTableModel.fireTableDataChanged();
     }
+    public String getOutput(){
+        String output=analisis.getInfo_pila()+"Lista de errores: \n";
+        for(String s:listaErrores){
+            output=output+s+"\n";
+        }
+        return output;
+    }
 }

@@ -28,6 +28,7 @@ public class Contr_Main {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane numeracion;
     private javax.swing.JButton jButtonEjecutar;
     private javax.swing.JButton jButtonOutput;
@@ -61,7 +62,7 @@ public class Contr_Main {
         jTableFunc=ventana.getjTable2();
         semantico=new Semantico(jScrollPane2,jTableVar,jTableFunc);
         jButtonOutput=ventana.getjButtonOutput();
-
+        jTextPane2=ventana.getjTextPane2();
 
         Document doc = jTextPane1.getDocument();
         doc.addDocumentListener(new DocumentListener(){
@@ -116,6 +117,7 @@ public class Contr_Main {
             public void actionPerformed(ActionEvent e) {
                 String cadena=jTextPane1.getText();
                 semantico.run(cadena);
+                jTextPane2.setText(semantico.getOutput());
             }
         });
         jButtonOutput.addActionListener(new ActionListener() {

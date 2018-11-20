@@ -51,10 +51,16 @@ public class Sintactico {
     private Nodo raiz;
     private JScrollPane jScrollPane2;
     private JPanel panel;
+    private String info_pila;
 
     public Nodo getRaiz() {
         return raiz;
     }
+
+    public String getInfo_pila() {
+        return info_pila;
+    }
+    
     
     public Sintactico(String cadena) {
         pila = new Stack<>();
@@ -81,6 +87,7 @@ public class Sintactico {
         };
         panel.setBackground(Color.WHITE);
         jScrollPane2.setViewportView(panel);
+        info_pila="";
     }
     public void inicializar(String cadena){
         pila.removeAllElements();
@@ -89,6 +96,7 @@ public class Sintactico {
         raiz=null;
         lexico=new Lexico(cadena);
         cancelar=false;
+        info_pila="";
     }
     public void ejercicio1() {
         pila.push(new Terminal(2));
@@ -155,6 +163,7 @@ public class Sintactico {
                 if (accion < 0) {
                     if (accion == -1) {
                         aceptacion = true;
+                        info_pila+="cadena admitida\n";
                         System.out.println("cadena admitida");
                     } else {
                         aux = Math.abs(accion + 2)+1;
@@ -214,6 +223,7 @@ public class Sintactico {
                     }
                 } else {
                     cancelar = true;
+                    info_pila="cadena  no admitida\n";
                     System.out.println("cadena no admitida");
                     muestra();
                 }
@@ -241,16 +251,21 @@ public class Sintactico {
         for (Object d : pila.toArray()) {
             if (Terminal.class.isInstance(d)) {
                 if (((Terminal) d).getsimbolo() != null) {
+                    info_pila=info_pila+((Terminal) d).getsimbolo();
                     System.out.print(((Terminal) d).getsimbolo());
                 } else {
+                    info_pila=info_pila+((Terminal) d).getid();
                     System.out.print(((Terminal) d).getid());
                 }
             } else if (Estado.class.isInstance(d)) {
+                info_pila=info_pila+((Estado) d).getid()+" ";
                 System.out.print(((Estado) d).getid());
             } else {
+                info_pila=info_pila+((NoTerminal) d).getregla();
                 System.out.print(((NoTerminal) d).getregla());
             }
         }
+        info_pila=info_pila+"\n";
         System.out.println();
     }
     public void cargar_datos() {
