@@ -12,6 +12,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,7 +36,6 @@ public class Contr_Main {
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane numeracion;
     private javax.swing.JButton jButtonEjecutar;
-    private javax.swing.JButton jButtonOutput;
     private javax.swing.JTable jTableVar;
     private javax.swing.JTable jTableFunc;
 
@@ -47,6 +51,7 @@ public class Contr_Main {
         jScrollPane2=ventana.getjScrollPane2();
         jTabbedPane1=ventana.getjTabbedPane1();
         jTextPane1=ventana.getjTextPane1();
+        jTextPane2=ventana.getjTextPane2();
         numeracion=new JTextPane();
         nfila=1;
         numeracion.setEditable(false);
@@ -55,13 +60,13 @@ public class Contr_Main {
         Font font=new Font("Arial",Font.PLAIN,18);
         numeracion.setFont(font);
         jTextPane1.setFont(font);
+        jTextPane2.setFont(font);
 //        numeracion.setEnabled(false);
         numeracion.setText("1");
         jButtonEjecutar=ventana.getjButtonEjecutar();
         jTableVar=ventana.getjTable1();
         jTableFunc=ventana.getjTable2();
         semantico=new Semantico(jScrollPane2,jTableVar,jTableFunc);
-        jButtonOutput=ventana.getjButtonOutput();
         jTextPane2=ventana.getjTextPane2();
 
         Document doc = jTextPane1.getDocument();
@@ -118,12 +123,6 @@ public class Contr_Main {
                 String cadena=jTextPane1.getText();
                 semantico.run(cadena);
                 jTextPane2.setText(semantico.getOutput());
-            }
-        });
-        jButtonOutput.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
             }
         });
         

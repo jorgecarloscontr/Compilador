@@ -157,14 +157,13 @@ public class Sintactico {
                 pila.add(new Estado(accion));
                 muestra();
                 lexico.automata();
-                if(lexico.getestado()==-1)
+                if(lexico.getestado()==-1){
                     cancelar=true;
+                }
             } else {
                 if (accion < 0) {
                     if (accion == -1) {
                         aceptacion = true;
-                        info_pila+="cadena admitida\n";
-                        System.out.println("cadena admitida");
                     } else {
                         aux = Math.abs(accion + 2)+1;
                         if(aux==1){
@@ -223,13 +222,13 @@ public class Sintactico {
                     }
                 } else {
                     cancelar = true;
-                    info_pila="cadena  no admitida\n";
-                    System.out.println("cadena no admitida");
                     muestra();
                 }
             }
         }
         if(raiz!=null){
+            info_pila+="cadena admitida\n";
+            System.out.println("cadena admitida");
             ncapa(0,raiz);
             System.out.println(max);
             int cont=0;
@@ -244,6 +243,9 @@ public class Sintactico {
                 cont++;
             }    
             pintar(raiz);
+        }else{
+            info_pila+="cadena  no admitida\n";
+            System.out.println("cadena no admitida");
         }
         
     }

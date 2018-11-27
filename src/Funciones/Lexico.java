@@ -55,7 +55,7 @@ public final class Lexico {
         cont=1;
         tmp="";
         ps=0;
-        numLinea=0;
+        numLinea=1;
         aux=0;
         if(!entrada.isEmpty())
             caracter=entrada.charAt(0);
@@ -90,6 +90,8 @@ public final class Lexico {
                         estado=38;
                     }else if(caracter==101){//e
                         estado=43;
+                    }else if(caracter==115){//s
+                        estado=52;
                     }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || caracter==95){//letra
                         estado=4;
                     }else if(caracter==43 || caracter==45){//suma
@@ -450,13 +452,63 @@ public final class Lexico {
                         aux=4;
                         estado=-1;}
                     break;
-                 case 50:
+                case 50:
                     if(caracter==34){//""
                         aux=51;
                         ps=1;
                         estado=-1;
                     }else{
                         estado=50;}
+                    break;
+                case 52: 
+                    if(caracter==116){//t
+                        aux=estado;
+                        estado=53;
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                        estado=4;
+                    }else{
+                        aux=4;
+                        estado=-1;}
+                    break;
+                case 53: 
+                    if(caracter==114){//r
+                        aux=estado;
+                        estado=54;
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                        estado=4;
+                    }else{
+                        aux=4;
+                        estado=-1;}
+                    break;
+                case 54: 
+                    if(caracter==105){//i
+                        aux=estado;
+                        estado=55;
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                        estado=4;
+                    }else{
+                        aux=4;
+                        estado=-1;}
+                    break;
+                case 55: 
+                    if(caracter==110){//n
+                        aux=estado;
+                        estado=56;
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                        estado=4;
+                    }else{
+                        aux=4;
+                        estado=-1;}
+                    break;
+                case 56: 
+                    if(caracter==103){//g
+                        aux=estado;
+                        estado=25;
+                    }else if((caracter>64 && caracter<91) || (caracter>96 && caracter<123) || (caracter>47 && caracter<58)){
+                        estado=4;
+                    }else{
+                        aux=4;
+                        estado=-1;}
                     break;
             }
             if(estado==-1){//si el estado es de error
@@ -489,7 +541,6 @@ public final class Lexico {
                 if(cont<entrada.length()){//sigue con la lectura
                     caracter=sig_caracter(entrada);
                 }else{//cuando se termina cadena
-                    System.out.println("niinininininini");
                     if(estado!=0){
                         System.out.println(recortar(entrada,1)+"\t\t"+tipoc(estado));
                         simbolo=recortar(entrada,1);

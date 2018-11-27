@@ -471,26 +471,27 @@ class Sentencia extends Nodo{
                 break;
             case 2: //llamada a funcion falta declarar
                 if(Semantico.tablaSimbolos.funcionDefinida(this.getultimo().getultimo().simbolo)){
-                    Nodo aux=this.getprimero().getprimero();
+                    Nodo aux=this.getultimo().getprimero();
                     int cont=0;
                     char c;
-                    List<String> lista= Semantico.tablaSimbolos.parametrosFuncionDefinida(this.getprimero().getultimo().simbolo);
+                    List<String> lista= Semantico.tablaSimbolos.parametrosFuncionDefinida(this.getultimo().getultimo().simbolo);
                     while(!aux.getHijos().isEmpty()){
                         if(cont<lista.size()){
                             aux.getHijos().get(1).validaTipos(Semantico.tablaSimbolos);
-                            c=Semantico.tablaSimbolos.tipoVariableLocal(lista.get(cont),this.getprimero().getultimo().simbolo);
+                            c=Semantico.tablaSimbolos.tipoVariableLocal(lista.get(cont),this.getultimo().getultimo().simbolo);
                             if(((Expresion)aux.getHijos().get(1)).getTipo()!=c){
-                                Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "' incorrecta, el parametro "+(cont+1)+" deve ser de tipo "+ c);
+                                Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo().getultimo()).numLinea+": Lammada a funcion '"+this.getultimo().getultimo().simbolo+ "' incorrecta, el parametro "+(cont+1)+" deve ser de tipo "+ c);
                             }
                         }
                         aux=aux.getprimero();
                         cont++;
                     }
                     if(cont!=lista.size()){
-                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getprimero().getultimo()).numLinea+": Lammada a funcion '"+this.getprimero().getultimo().simbolo+ "'  contiene una cantidad de parametros incorrectos");
+                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo().getultimo()).numLinea+": Lammada a funcion '"+this.getultimo().getultimo().simbolo+ "'  contiene una cantidad de parametros incorrectos");
                     }
                 }else{
-                    Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo().getultimo()).numLinea+": Funcion "+this.getultimo().getultimo().simbolo+" no delarada");
+                    if(!this.getultimo().getultimo().simbolo.equals("print"))
+                        Semantico.listaErrores.add("Error en la linea "+((Identificador)this.getultimo().getultimo()).numLinea+": Funcion "+this.getultimo().getultimo().simbolo+" no delarada");
                 }
                 break;
                 
